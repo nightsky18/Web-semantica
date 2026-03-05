@@ -1,62 +1,53 @@
+<!-- Este archivo define la ontología global (JSON-LD para la tienda) y el contenedor
+  para datos dinámicos (sección .album-list). Usa prefix="schema: http://schema.org/" 
+  para resolver URIs RDF.
+  -->
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" prefix="schema: http://schema.org/">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Documento HTML</title>
-    <link rel="stylesheet" href="styles.css"> 
-    <script type="application/Id+json">
-        {
-            "@context": "https://schema.org",
-            "@type": "WebPage",
-            "name": "Documento HTML Básico",
-            "description": "Un ejemplo de un documento HTML básico con metadatos JSON-LD.",
-            "url": "https://co.pinterest.com/pin/631278072787006596/"  
+    <title>Tienda de Música Semántica</title>
+    <link rel="stylesheet" href="styles.css">
+    <script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "MusicStore",
+        "@id": "https://www.tiendamusicasemantica.com",
+        "name": "Tienda de Música Semántica",
+        "description": "Una tienda en línea con una vasta colección de álbumes de música.",
+        "url": "https://www.tiendamusicasemantica.com",
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Calle 123",
+            "addressLocality": "Ciudad",
+            "addressRegion": "Estado",
+            "postalCode": "12345",
+            "addressCountry": "CO"
         }
+    }
     </script>
 </head>
 <body>
     <header>
-        <div
-            class="container">
-            <h1>Tienda de celulares</h1>
-            <ul 
-                class="nav">
+        <h1>Tienda de Música Semántica</h1>
+        <nav>
+            <ul>
                 <li><a href="#">Inicio</a></li>
-                <li><a href="#">Productos</a></li>
+                <li><a href="#">Álbumes</a></li>
+                <li><a href="#">Artistas</a></li>
                 <li><a href="#">Contacto</a></li>
             </ul>
         </nav>
-        </div>
     </header>
-        <main class="container">
-            <h2>Bienvenido a nuestra tienda de celulares</h2>
-            <p>Aquí encontrarás los mejores modelos de celulares al mejor precio.</p>
-            <section class="product-gallery">
-                <img id="celular-a" src="celular-a.jpg" alt="Celular A">
-                <h2>Celular A</h2>
-                <p class="price">Precio: $299</p> 
-                <p class="brand">Marca: Samsung</p>
-                <p class="stock">en stock</p>
-                <p class="description">Características: Pantalla de 6.1 pulgadas, 128 GB de almacenamiento, cámara principal de 12 MP.</p>
-
-            </section>
-
-            <section class="product-gallery">
-                <img id="celular-b" src="celular-b.jpg" alt="Celular B">
-                <h2>Celular B</h2>
-                <p class="price">Precio: $399</p> 
-                <p class="brand">Marca: Apple</p>
-                <p class="stock">en stock</p>
-                <p class="description">Características: Pantalla de 6.5 pulgadas, 256 GB de almacenamiento, cámara principal de 12 MP.</p>
-            </section>
-
-            <div>
-                <button class="cartshopping">Añadir al carrito</button>
-            </div>
-
-            
-
-        </main>
+    <main>
+        <section class="album-list" id="album-list">
+            <!-- Los álbumes se cargarán aquí dinámicamente -->
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 Tienda de Música Semántica. Todos los derechos reservados.</p>
+    </footer>
+    <script src="script.js"></script>
 </body>
-</html> 
+</html>
