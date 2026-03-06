@@ -33,14 +33,37 @@ function loadWithProxy(proxies, index, container) {
         })
         .then(data => {
             if (data.results && data.results.length > 0) {
-                const albums = data.results.map(item => ({
-                    name: item.title,
-                    artist: item.artists?.[0]?.name || 'Unknown',
-                    genre: item.style?.[0] || 'Rock',
-                    releaseDate: item.year || 'N/A',
-                    cover: item.cover_image || 'https://via.placeholder.com/300?text=NoCover',
-                    label: item.labels?.[0]?.name || ''
-                }));
+                const albums = data.results.map(item => {
+                    // === PARSER SEMÁNTICO INTELIGENTE ===
+                    
+                    // 1. Extrae artista de title si artists vacío (patrón "Artista - Álbum")
+                    let artists = item.artists?.map(a => a.name).filter(Boolean) || [];
+                    let title = item.title || '';
+                    
+                    if (artists.length === 0 && title.includes(' - ')) {
+                        artists = [title.split(' - ')[0].trim()];  // "David Bowie" de "David Bowie - Rock Suicide"
+                        title = title.split(' - ').slice(1).join(' - ').trim();  // "Rock Suicide"
+                    } else if (artists.length === 0) {
+                        artists = ['Artista inferido'];  // Último fallback
+                    }
+                    
+                    const finalArtists = artists.join(', ');
+                    const finalTitle = title || 'Álbum sin título';
+                    
+                    return {
+                        id: item.id,
+                        name: finalTitle,
+                        artists: finalArtists,
+                        genre: item.style?.filter(Boolean).join(' / ') || 'Género desconocido',
+                        year: item.year ? `${item.year}` : 'N/D',
+                        cover: item.cover_image || `https://via.placeholder.com/300x200/333/fff?text=${finalTitle.slice(0,8)}`,
+                        label: item.labels?.map(l => l.name).filter(Boolean).join(', ') || '',
+                        masterUrl: item.master_url,
+                        country: item.country || ''
+                    };
+                });
+
+
                 renderAlbums(albums, container);
                 console.log('✅ Discogs loaded:', data.results.length, 'álbumes');
             } else {
@@ -75,19 +98,44 @@ function renderAlbums(albums, container) {
         article.setAttribute('vocab', 'http://schema.org/');
         article.setAttribute('typeof', 'MusicAlbum');
         article.setAttribute('data-genre', album.genre);
+        
+        // LÓGICA MEJORADA: Datos ricos Discogs
         article.innerHTML = `
-            <img src="${album.cover}" alt="${album.name}" property="image" loading="lazy">
+            <img src="${album.cover}" 
+                 alt="Portada ${album.name} - ${album.artists}" 
+                 property="image" 
+                 loading="lazy"
+                 onerror="this.src='https://via.placeholder.com/300?text=${encodeURIComponent(album.name.slice(0,10))}'">
+            
             <h2 property="name">${album.name}</h2>
-            <p><strong>Artista:</strong> <span property="byArtist">${album.artist}</span></p>
-            <p><strong>Género:</strong> <span property="genre">${album.genre}</span></p>
-            ${album.label ? `<p><strong>Label:</strong> <span property="recordLabel">${album.label}</span></p>` : ''}
-            <p><strong>Año:</strong> <span property="datePublished">${album.releaseDate}</span></p>
-            <button onclick="addToCart('${album.name}')">🛒 Carrito</button>
+            
+            <p><strong>👥 Artistas:</strong> 
+               <span property="byArtist">${album.artists}</span>
+            </p>
+            
+            <p><strong>🎸 Géneros:</strong> 
+               <span property="genre">${album.genre}</span>
+            </p>
+            
+            ${album.label ? `<p><strong>🏷️ Label:</strong> <span property="recordLabel">${album.label}</span></p>` : ''}
+            
+            <p><strong>📅 Año:</strong> 
+               <span property="datePublished">${album.year}</span>
+            </p>
+            
+            ${album.masterUrl ? `<p><strong>🔗 Original:</strong> <a href="${album.masterUrl}" property="url" target="_blank">Master Discogs</a></p>` : ''}
+            
+            <button onclick="addToCart('${album.name} - ${album.artists.slice(0,20)}...')" 
+                    aria-label="Agregar ${album.name} al carrito">
+                🛒 + Carrito (${album.id})
+            </button>
         `;
-        article.style.animationDelay = `${i * 0.1}s`;
+        
+        article.style.animationDelay = `${i * 0.12}s`;
         container.appendChild(article);
     });
 }
+
 
 function addToCart(name) {
     let cart = JSON.parse(localStorage.getItem('semanticCart') || '[]');
