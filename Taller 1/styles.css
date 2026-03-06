@@ -248,6 +248,9 @@ article a[property="url"]:hover {
     text-decoration: underline;
 }
 
+nav a.active { background: var(--accent-hover) !important; color: white; }
+
+
 
 @keyframes fadeInUp {
     to { opacity: 1; transform: translateY(0); }

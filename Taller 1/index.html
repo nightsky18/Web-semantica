@@ -1,20 +1,19 @@
 <!-- Este archivo define la ontología global (JSON-LD para la tienda) y el contenedor
-  para datos dinámicos (sección .album-list). Usa prefix="schema: http://schema.org/" 
-  para resolver URIs RDF.
+  para datos dinámicos (sección .album-list). Usa prefix="schema: http://schema.org/" para resolver URIs RDF.
   -->
 <!DOCTYPE html>
 <html lang="es" prefix="schema: http://schema.org/">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tienda de Música Semántica</title>
+    <title>MusicStore</title>
     <link rel="stylesheet" href="styles.css">
     <script type="application/ld+json">
     {
         "@context": "http://schema.org",
         "@type": "MusicStore",
         "@id": "https://www.tiendamusicasemantica.com",
-        "name": "Tienda de Música Semántica",
+        "name": "MusicStore",
         "description": "Una tienda en línea con una vasta colección de álbumes de música.",
         "url": "https://www.tiendamusicasemantica.com",
         "address": {
@@ -30,15 +29,17 @@
 </head>
 <body>
     <header>
-        <h1>Tienda de Música Semántica</h1>
-        <nav>
-            <ul>
-                <li><a href="#">Inicio</a></li>
-                <li><a href="#">Álbumes</a></li>
-                <li><a href="#">Artistas</a></li>
-                <li><a href="#">Contacto</a></li>
-            </ul>
-        </nav>
+        <h1>MusicStore</h1>
+            <nav>
+                <ul>
+                    <li><a href="#inicio" data-view="inicio">🏠 Inicio</a></li>
+                    <li><a href="#albumes" data-view="albumes">🎸 Álbumes</a></li>
+                    <li><a href="#artistas" data-view="artistas" data-query="david+bowie">👤 Artistas</a></li>
+                    <li><a href="#generos" data-view="generos" data-query="grunge">🎯 Géneros</a></li>
+                    <li><a href="#carrito" data-view="carrito">🛒 Carrito (<span id="cartCount"></span>)</a></li>
+                </ul>
+            </nav>
+
     </header>
     <main>
         <section class="album-list" id="album-list">
