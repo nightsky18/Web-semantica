@@ -1,63 +1,256 @@
-body {
-    font-family: 'Arial', sans-serif;
-    background-color: #eef2f3;
+/* Variables semánticas: mapa ontológico de colores por "género" musical */
+:root {
+    --bg-primary: #eef2f3;
+    --bg-secondary: #ffffff;
+    --accent-dark: #1a1a1d;
+    --accent-hover: #c3073f;
+    --text-primary: #2c3e50;
+    --text-secondary: #7f8c8d;
+    --border-subtle: #ecf0f1;
+    --shadow-light: 0 4px 12px rgba(0,0,0,0.08);
+    --shadow-hover: 0 8px 24px rgba(0,0,0,0.15);
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --border-radius: 12px;
+    --spacing-xs: clamp(0.5rem, 1vw, 1rem);
+    --spacing-md: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+/* Reset semántico: base universal */
+* {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
-header {
-    background-color: #1a1a1d;
-    color: white;
-    padding: 20px 0;
-    text-align: center;
+
+body {
+    font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, var(--bg-primary) 0%, #d5dbdb 100%);
+    color: var(--text-primary);
+    line-height: 1.6;
+    min-height: 100vh;
 }
+
+/* Header: signo de "autoridad" ontológica */
+header {
+    background: linear-gradient(135deg, var(--accent-dark) 0%, #2c3e50 100%);
+    color: white;
+    padding: var(--spacing-md) 0;
+    text-align: center;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    box-shadow: var(--shadow-light);
+}
+
+header h1 {
+    font-size: clamp(1.8rem, 5vw, 3rem);
+    margin-bottom: var(--spacing-xs);
+    letter-spacing: 0.05em;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+/* Nav: signos navegacionales hipertextuales */
 nav ul {
     list-style: none;
-    padding: 0;
     display: flex;
     justify-content: center;
+    gap: var(--spacing-xs);
+    flex-wrap: wrap;
 }
-nav ul li {
-    margin: 0 15px;
-}
+
 nav ul li a {
     color: white;
     text-decoration: none;
-    font-weight: bold;
-    transition: color 0.3s;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--border-radius);
+    transition: var(--transition-smooth);
+    position: relative;
 }
-nav ul li a:hover {
-    color: #c3073f;
+
+nav ul li a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: var(--accent-hover);
+    transition: var(--transition-smooth);
+    transform: translateX(-50%);
 }
+
+nav ul li a:hover::after,
+nav ul li a:focus::after {
+    width: 80%;
+}
+
+nav ul li a:hover,
+nav ul li a:focus {
+    background: rgba(255,255,255,0.1);
+    transform: translateY(-2px);
+}
+
+/* Main: contenedor ontológico principal */
 main {
-    padding: 20px;
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
+    padding: var(--spacing-md);
+    max-width: 1400px;
+    margin: 0 auto;
 }
+
+/* Album-list: grid semántico para entidades MusicAlbum */
+.album-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: var(--spacing-md);
+    animation: fadeIn 0.8s ease-out;
+}
+
+/* Article: signo principal para cada MusicAlbum (tarjeta ontológica) */
 .album-list article {
-    background-color: white;
-    padding: 15px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    width: 300px;
-    margin: 15px;
-    text-align: center;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    background: var(--bg-secondary);
+    padding: var(--spacing-md);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-light);
+    transition: var(--transition-smooth);
+    position: relative;
+    overflow: hidden;
 }
+
+.album-list article:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: var(--shadow-hover);
+    border-color: var(--accent-hover);
+}
+
+.album-list article::before {
+    content: attr(data-genre, ''); /* Icono semántico futuro */
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: var(--accent-hover);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    opacity: 0;
+    transition: var(--transition-smooth);
+}
+
+.album-list article:hover::before {
+    opacity: 1;
+}
+
+/* Imagen: signo perceptual primario */
 .album-list img {
     width: 100%;
-    border-radius: 5px;
-    margin-bottom: 10px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: calc(var(--border-radius) / 2);
+    margin-bottom: var(--spacing-xs);
+    transition: var(--transition-smooth);
 }
+
+.album-list article:hover img {
+    transform: scale(1.05);
+}
+
+/* Propiedades textuales: jerarquía semántica */
+.album-list h2 {
+    font-size: 1.4rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent-dark);
+}
+
+.album-list h2[property="name"] {
+    font-weight: 700;
+    border-bottom: 2px solid var(--border-subtle);
+    padding-bottom: 0.5rem;
+}
+
+.album-list p {
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.album-list p strong {
+    color: var(--accent-dark);
+    min-width: 5rem;
+    font-weight: 600;
+}
+
+/* Botón: signo de acción (agregar al carrito) */
 button {
-    background-color: #1a1a1d;
+    background: linear-gradient(135deg, var(--accent-dark), #34495e);
     color: white;
-    padding: 10px 15px;
+    padding: 1rem 2rem;
     border: none;
-    border-radius: 5px;
+    border-radius: var(--border-radius);
     cursor: pointer;
-    transition: background-color 0.3s;
+    font-weight: 600;
+    width: 100%;
+    transition: var(--transition-smooth);
+    margin-top: 1rem;
 }
-button:hover {
-    background-color: #c3073f;
+
+button:hover,
+button:focus {
+    background: linear-gradient(135deg, var(--accent-hover), #e74c3c);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(195, 7, 63, 0.3);
+}
+
+/* Footer: cierre ontológico */
+footer {
+    background: var(--accent-dark);
+    color: white;
+    text-align: center;
+    padding: 2rem;
+    margin-top: var(--spacing-md);
+}
+
+/* Animaciones semánticas: guía cognitiva */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.album-list {
+    animation: fadeIn 0.8s ease-out;
+}
+
+.album-list article {
+    animation: fadeInUp 0.6s ease-out forwards;
+    opacity: 0;
+    transform: translateY(30px);
+}
+
+.album-list article:nth-child(1) { animation-delay: 0.1s; }
+.album-list article:nth-child(2) { animation-delay: 0.2s; }
+
+@keyframes fadeInUp {
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Media queries: responsividad semántica universal */
+@media (max-width: 768px) {
+    .album-list {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-xs);
+    }
+    
+    main {
+        padding: var(--spacing-xs);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, button, article {
+        transition: none !important;
+        animation: none !important;
+    }
 }
