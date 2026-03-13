@@ -1,0 +1,85 @@
+:root(){
+    --primary: #773cae;
+    --bg: #0f172a;
+    --card: #165441;
+    --card-bg: #1e293b;
+    --text: #fff;
+    --code-bg: #272822;  
+}
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+body{
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+background-color: var(--bg);
+color: var(--text);
+margin: 0;
+list-style: 1.6;
+
+}
+header{
+    padding: 3rem 1rem;
+    text-align: center;
+}
+header h1{
+    font-size: 2.5rem;
+    color: var(--primary);
+}
+
+.container{
+    max-width: 1200px;
+    margin: 2rem auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    padding: 0 1rem;
+}
+/* estilo para el codigo xml */
+pre{
+    background-color: var(--code-bg);
+    padding: 1.5rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    color: #ae81ff;
+    overflow: auto;
+    border: 1px solid #3e3e3e;
+
+}
+.action{
+    text-align: center ;
+    margin: 2rem 0;
+}
+button{
+    background-color: var(--primary);
+    color: #fff;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: transform 0.3s, background-color 0.3s;
+}
+button:hover{
+    background-color: #4338ca;
+    transform: scale(1.05);
+}
+/* grid a las targetas */
+.grid-catalog{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+.card{
+    background-color: var(--card-bg);
+    color: var(--text);
+    border: 1px solid var(--card);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s, box-shadow 0.3s;
+    padding: 1rem;
+    text-align: center;
+}
